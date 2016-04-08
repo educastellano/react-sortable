@@ -1,0 +1,45 @@
+{
+  "name": "@educastellano/react-sortable",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "storybook": "BABEL_ENV=development start-storybook -p 9001",
+    "test": "BABEL_ENV=test mocha --compilers js:babel-core/register,styl:mocha-stylus-compiler -R nyan -w --check-leaks"
+  },
+  "browserify": {
+    "transform": [
+      "babelify",
+      [
+        "stylusify",
+        {
+          "autoprefix": true
+        }
+      ]
+    ]
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@kadira/storybook": "^1.6.0",
+    "babel-core": "^6.7.5",
+    "babel-preset-react": "^6.5.0",
+    "babel-preset-stage-2": "^6.5.0",
+    "react": "^0.14.2",
+    "react-dom": "^0.14.2",
+    "react-drag-and-drop": "^2.0.1",
+    "stack-source-map": "^1.0.4",
+    "webpack-hot-middleware": "^2.10.0"
+  },
+  "babel": {
+    "env": {
+      "development": {
+        "presets": [
+          "react",
+          "es2015",
+          "stage-2"
+        ]
+      }
+    }
+  }
+}
