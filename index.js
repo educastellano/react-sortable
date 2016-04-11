@@ -9,6 +9,14 @@ export default class Sortable extends React.Component {
         }
     }
     componentWillMount() {
+        this._setDraggableChildren()
+    }
+    componentWillReceiveProps(nextProps) {
+        if ('children' in nextProps) {
+            this._setDraggableChildren()
+        }
+    }
+    _setDraggableChildren() {
         this.state.children = React.Children.map(this.props.children, (child, index) => {
             return (
                 <div draggable='true'
