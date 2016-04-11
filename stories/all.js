@@ -23,7 +23,7 @@ var css =
 `
 
 storiesOf('Sortable', module)
-    .add('with simple sort', () => {
+    .add('with simple sorting', () => {
         let onSort = (components) => {
             console.log('*** onSort() *** ', components.map((c) => c.props.children))
         }
@@ -32,6 +32,25 @@ storiesOf('Sortable', module)
                 <style>{css}</style>
                 <h2>Sortable Fruits</h2>
                 <Sortable onSort={onSort}>
+                    <div>Apple</div>
+                    <div>Orange</div>
+                    <div>Banana</div>
+                    <div>Mango</div>
+                    <div>Melon</div>
+                    <div>Pineapple</div>
+                </Sortable>
+            </div>
+        )
+    })
+    .add('with sorting disabled', () => {
+        let onSort = (components) => {
+            console.log('*** onSort() *** ', components.map((c) => c.props.children))
+        }
+        return (
+            <div className='list'>
+                <style>{css}</style>
+                <h2>Sortable Fruits</h2>
+                <Sortable onSort={onSort} enabled={false}>
                     <div>Apple</div>
                     <div>Orange</div>
                     <div>Banana</div>

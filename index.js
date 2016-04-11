@@ -9,15 +9,19 @@ export default class Sortable extends React.Component {
         }
     }
     componentWillMount() {
-        this._setDraggableChildren()
+        this.setState({
+            children: this._mapDraggableChildren(this.props.children)
+        }) 
     }
     componentWillReceiveProps(nextProps) {
         if ('children' in nextProps) {
-            this._setDraggableChildren()
+            this.setState({
+                children: this._mapDraggableChildren(nextProps.children)
+            }) 
         }
     }
-    _setDraggableChildren() {
-        this.state.children = React.Children.map(this.props.children, (child, index) => {
+    _mapDraggableChildren(children) {
+        return React.Children.map(children, (child, index) => {
             return (
                 <div draggable='true'
                      onDragStart={this.onItemDragStart.bind(this, child)}
@@ -35,7 +39,7 @@ export default class Sortable extends React.Component {
         })
     }
     onItemDragEnd(component, e) {
-        if (this.props.onSort) {
+        if (this.props.enabled && this.props.onSort) {
             let children = this.state.children.map((draggable) => {
                 return draggable.props.children
             })
@@ -46,7 +50,7 @@ export default class Sortable extends React.Component {
         })
     }
     onItemDragEnter(component, e) {
-        if (component !== this.state.sorting) {
+        if (this.props.enabled && component !== this.state.sorting) {
             let sortingIndex = this.indexOf(this.state.sorting)     // TODO probably no need to be O(n)...
             let dropIndex = this.indexOf(component)                 // TODO probably no need to be O(n)...
             if (sortingIndex !== -1 && dropIndex !== -1) {
@@ -91,4 +95,8 @@ export default class Sortable extends React.Component {
             </div>
         )
     }
+}
+
+Sortable.defaultProps = {
+    enabled: true
 }
