@@ -16,18 +16,22 @@ var css =
         width: 256px;
         padding: 20px;
     }
+    .Sortable div {
+        padding: 5px;
+        border: 1px solid;
+    }
 `
 
 storiesOf('Sortable', module)
     .add('with simple sort', () => {
         let onSort = (components) => {
-            console.log('*** onSort() *** ', components)
+            console.log('*** onSort() *** ', components.map((c) => c.props.children))
         }
         return (
             <div className='list'>
+                <style>{css}</style>
                 <h2>Sortable Fruits</h2>
                 <Sortable onSort={onSort}>
-                    <style>{css}</style>
                     <div>Apple</div>
                     <div>Orange</div>
                     <div>Banana</div>

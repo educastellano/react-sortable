@@ -4,22 +4,51 @@ export default class Sortable extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            sorting: false
+            children: [],
+            sorting: null
         }
+    }
+    componentWillMount() {
+        this.state.children = React.Children.map(this.props.children, (child, index) => {
+            return (
+                <div draggable='true'
+                     onDragStart={this.onItemDragStart.bind(this, child)}
+                     onDragEnd={this.onItemDragEnd.bind(this, child)}
+                     onDragEnter={this.onItemDragEnter.bind(this, child)}>
+                    {child}
+                </div>
+            )
+        })
     }
     onItemDragStart(component, e) {
         e.dataTransfer.setData('component_props', JSON.stringify(component.props))
         this.setState({
-            sorting: true
+            sorting: component
         })
     }
     onItemDragEnd(component, e) {
         if (this.props.onSort) {
-            this.props.onSort(this.props.children)
+            let children = this.state.children.map((draggable) => {
+                return draggable.props.children
+            })
+            this.props.onSort(children)
         }
         this.setState({
-            sorting: false
+            sorting: null
         })
+    }
+    onItemDragEnter(component, e) {
+        if (component !== this.state.sorting) {
+            let sortingIndex = this.indexOf(this.state.sorting)     // TODO probably no need to be O(n)...
+            let dropIndex = this.indexOf(component)                 // TODO probably no need to be O(n)...
+            if (sortingIndex !== -1 && dropIndex !== -1) {
+                let sortingComponent = this.state.children.splice(sortingIndex, 1) // remove
+                if (sortingComponent.length) {
+                    this.state.children.splice(dropIndex, 0, sortingComponent[0]) // insert
+                    this.forceUpdate()
+                }
+            }
+        }
     }
     onDrop(e) {
         let data = e.dataTransfer.types.reduce((p, type) => {
@@ -35,21 +64,22 @@ export default class Sortable extends React.Component {
     onDragOver(e) {
         e.preventDefault()
     }
+    indexOf(component) {
+        let index = 0
+        for (let child of this.state.children) {
+            if (child.props.children === component) {
+                return index
+            }
+            index++
+        }
+        return -1
+    }
     render() {
-        let sortableChildren = React.Children.map(this.props.children, (child, index) => {
-            return (
-                <div draggable='true'
-                     onDragStart={this.onItemDragStart.bind(this, child)}
-                     onDragEnd={this.onItemDragEnd.bind(this, child)}>
-                    {child}
-                </div>
-            )
-        })
         return (
             <div className={'Sortable ' + this.props.className} 
                 onDrop={this.onDrop.bind(this)} 
                 onDragOver={this.onDragOver.bind(this)}>
-                {sortableChildren}
+                {this.state.children}
             </div>
         )
     }
