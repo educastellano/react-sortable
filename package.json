@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "storybook": "BABEL_ENV=development start-storybook -p 9001",
-    "test": "BABEL_ENV=test mocha --compilers js:babel-core/register,styl:mocha-stylus-compiler -R nyan -w --check-leaks"
+    "storybook": "start-storybook -p 9001",
+    "test": "mocha --compilers js:babel-core/register,styl:mocha-stylus-compiler -R nyan -w --check-leaks"
   },
   "browserify": {
     "transform": [
@@ -33,13 +33,15 @@
   },
   "babel": {
     "env": {
-      "development": {
-        "presets": [
-          "react",
-          "es2015",
-          "stage-2"
-        ]
-      }
+      "presets": [
+        "react",
+        "es2015",
+        "stage-2"
+      ]
     }
+  },
+  "dependencies": {
+    "mocha": "^3.2.0",
+    "mocha-stylus-compiler": "^1.0.1"
   }
 }
