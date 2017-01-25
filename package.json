@@ -1,6 +1,5 @@
 {
-  "name": "@educastellano/react-sortable",
-  "private": false,
+  "name": "react-sortable-dnd",
   "version": "0.0.4",
   "description": "",
   "main": "index.js",
