@@ -1,11 +1,11 @@
-# react-sortable
+# react-sortable-dnd
 
 In Progress... :triangular_ruler: :pencil2:
 
 ## Install
 
 ```
-npm i @educastellano/react-sortable --save 
+npm i react-sortable-dnd --save 
 ```
 
 ## Usage
