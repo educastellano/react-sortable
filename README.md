@@ -2,6 +2,8 @@
 
 A React component to sort elements of any type. It also supports dropping external elements in any position.
 
+> [Demo](http://educastellano.github.io/react-sortable-dnd)
+
 ## Install
 
 ```
@@ -11,7 +13,7 @@ npm i react-sortable-dnd --save
 ## Usage
 
 ```html
-<Sortable onSort={components => console.log(components.map(c => c.props.children))}>
+<Sortable onSort={components => console.log(components)}>
     <div>Apple</div>
     <div>Mango</div>
     <div>Pineapple</div>
