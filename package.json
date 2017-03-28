@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "start-storybook -p 9001",
-    "test": "mocha --compilers js:babel-core/register,styl:mocha-stylus-compiler -R nyan -w --check-leaks"
+    "test": "mocha --compilers js:babel-core/register,styl:mocha-stylus-compiler -R nyan -w --check-leaks",
+    "postversion": "git push && git push --tags"
   },
   "browserify": {
     "transform": [
@@ -18,7 +19,11 @@
       ]
     ]
   },
-  "author": "",
+  "author": "Eduard Castellano",
+  "git": {
+    "type": "git",
+    "url": "https://github.com/educastellano/react-sortable-dnd"
+  },
   "license": "ISC",
   "devDependencies": {
     "@kadira/storybook": "^2.35.3",

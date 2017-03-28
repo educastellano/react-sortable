@@ -19,4 +19,7 @@ export default
     .list div[draggable=true]:last-child {
         border-bottom: 1px solid;
     }
+    .arrow {
+        font-size: 24px;
+    }
 `

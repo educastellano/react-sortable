@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Placeholder = () => <div className='Placeholder'>{'\u00A0'}</div>
+const Placeholder = (props) => <div className={props.className}>{'\u00A0'}</div>
 
 export default class Sortable extends React.Component {
     constructor(props) {
@@ -10,7 +10,7 @@ export default class Sortable extends React.Component {
             sorting: null,
             placeholderIndex: -1
         }
-        this._placeholder = <Placeholder key='__placeholder__' />
+        this._placeholder = <Placeholder className={this.props.classPlaceholder} key='__placeholder__' />
     }
     componentWillMount() {
         this.setState({
@@ -86,7 +86,7 @@ export default class Sortable extends React.Component {
         }, {})
         if (!this.state.sorting) {
             if (this.props.onDrop) {
-                this.props.onDrop(data, this.state.placeholderIndex)
+                this.props.onDrop(e, data, this.state.placeholderIndex)
             }            
         }
         this.removePlaceholder()
@@ -136,5 +136,6 @@ export default class Sortable extends React.Component {
 
 Sortable.defaultProps = {
     className: 'Sortable',
+    classPlaceholder: 'Placeholder',
     enabled: true
 }
