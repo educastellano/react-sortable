@@ -1,7 +1,7 @@
 import { configure } from '@kadira/storybook';
 
 function loadStories() {
-  require('../stories/all');
+  require('../stories/sortable');
   // require as many stories as you need.
 }
 

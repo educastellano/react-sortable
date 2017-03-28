@@ -1,30 +1,14 @@
 import React                 from 'react';
-import { storiesOf, action } from '@kadira/storybook';
-import Sortable              from '../index' 
 import { Draggable }         from 'react-drag-and-drop'
 import { Droppable }         from 'react-drag-and-drop'
-
-var css = 
-`
-    .lists {
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-    }
-    .list { 
-        background: lightsalmon;
-        width: 256px;
-        padding: 20px;
-    }
-    .Sortable div {
-        padding: 5px;
-        border: 1px solid;
-    }
-`
+import { storiesOf, action } from '@kadira/storybook';
+import Sortable              from '../index' 
+import css                   from './style'
 
 storiesOf('Sortable', module)
     .add('with simple sorting', () => {
         let onSort = (components) => {
+            action('onSort()')(components)
             console.log('*** onSort() *** ', components.map((c) => c.props.children))
         }
         return (
@@ -42,8 +26,29 @@ storiesOf('Sortable', module)
             </div>
         )
     })
+    .add('with components', () => {
+        let Fruit = (props) => <div className='Fruit'>{ props.icon } {props.children}</div>
+        let onSort = (components) => {
+            action('onSort()')(components)
+            console.log('*** onSort() *** ', components, components.map((c) => c.props.icon))
+        }
+        return (
+            <div className='list'>
+                <style>{css}</style>
+                <h2>Sortable Fruits</h2>
+                <Sortable onSort={onSort}>
+                    <Fruit icon='🍓'>Strawberry</Fruit>
+                    <Fruit icon='🍍'>Pineapple</Fruit>
+                    <Fruit icon='🍌'>Banana</Fruit>
+                    <Fruit icon='🍎'>Apple</Fruit>
+                    <Fruit icon='🍋'>Lemon</Fruit>
+                </Sortable>
+            </div>
+        )
+    })
     .add('with sorting disabled', () => {
         let onSort = (components) => {
+            action('onSort()')(components)
             console.log('*** onSort() *** ', components.map((c) => c.props.children))
         }
         return (
@@ -63,10 +68,12 @@ storiesOf('Sortable', module)
     })
     .add('dropping new items', () => {
         let onSort = (components) => {
+            action('onSort()')(components)
             console.log('*** onSort() *** ', components)
         }
         let onDrop = (data, index) => {
-            console.log('*** Dropped', data.fruit, ', on index', index)
+            action('onDrop()')(data, index)
+            console.log('*** Dropped', data.fruit, 'on index', index, '****')
         }
         return (
             <div className='lists'>
@@ -96,10 +103,12 @@ storiesOf('Sortable', module)
     })
     .add('dragging items outside', () => {
         let onSort = (components) => {
+            action('onSort()')(components)
             console.log('*** onSort() *** ', components)
         }
         let onDrop = (nothing, e) => {
             let componentProps = JSON.parse(e.dataTransfer.getData('component_props'))
+            action('Dragged out')(componentProps)
             console.log('Dragged out', componentProps.children)
         }
         return (
@@ -130,13 +139,16 @@ storiesOf('Sortable', module)
     })
     .add('with 2 sortable lists', () => {
         let onSort = (components) => {
+            action('onSort()')(components)
             console.log('*** onSort() *** ', components)
         }
         let onLeftDrop = (data, index) => {
+            action('onLeftDrop()')(data, index)
             let componentProps = JSON.parse(data.component_props)
             console.log('*** Dropped on left list', componentProps.children, ', on index', index)
         }
         let onRightDrop = (data, index) => {
+            action('onRightDrop()')(data, index)
             let componentProps = JSON.parse(data.component_props)
             console.log('*** Dropped on right list', componentProps.children, ', on index', index)
         }

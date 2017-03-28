@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "storybook": "start-storybook -p 9001",
+    "start": "start-storybook -p 9001",
     "test": "mocha --compilers js:babel-core/register,styl:mocha-stylus-compiler -R nyan -w --check-leaks"
   },
   "browserify": {
@@ -21,10 +21,12 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@kadira/storybook": "^1.6.0",
+    "@kadira/storybook": "^2.35.3",
     "babel-core": "^6.7.5",
     "babel-preset-react": "^6.5.0",
     "babel-preset-stage-2": "^6.5.0",
+    "mocha": "^3.2.0",
+    "mocha-stylus-compiler": "^1.0.1",
     "react": "^0.14.2",
     "react-dom": "^0.14.2",
     "react-drag-and-drop": "^2.0.1",
@@ -39,9 +41,5 @@
         "stage-2"
       ]
     }
-  },
-  "dependencies": {
-    "mocha": "^3.2.0",
-    "mocha-stylus-compiler": "^1.0.1"
   }
 }
