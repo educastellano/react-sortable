@@ -1,6 +1,7 @@
 import React from 'react'
 
 const Placeholder = (props) => <div className={props.className}>{'\u00A0'}</div>
+const typePrefix = '__type__'
 
 export default class Sortable extends React.Component {
     constructor(props) {
@@ -37,10 +38,17 @@ export default class Sortable extends React.Component {
         })
     }
     onItemDragStart(component, e) {
+        e.stopPropagation()
         e.dataTransfer.setData('component_props', JSON.stringify(component.props))
+        if (this.props.type) {
+            e.dataTransfer.setData(typePrefix+this.props.type, this.props.type)
+        }
         this.setState({
             sorting: component
         })
+        if (this.props.onSortStart) {
+            this.props.onSortStart(component, e)
+        }
     }
     onItemDragEnd(component, e) {
         if (this.props.enabled && this.props.onSort) {
@@ -54,7 +62,12 @@ export default class Sortable extends React.Component {
         })
     }
     onItemDragEnter(component, e) {
-        if (this.props.enabled && component !== this.state.sorting) {
+        let allowed = 
+            this.props.enabled && 
+            component !== this.state.sorting &&
+            !(this.props.type && !e.dataTransfer.types.includes(typePrefix+this.props.type))
+        // sort
+        if (allowed) {
             let sortingIndex = this.indexOf(this.state.sorting)
             let dropIndex = this.indexOf(component)
             if (sortingIndex !== -1 && dropIndex !== -1) {
@@ -137,5 +150,6 @@ export default class Sortable extends React.Component {
 Sortable.defaultProps = {
     className: 'Sortable',
     classPlaceholder: 'Placeholder',
-    enabled: true
+    enabled: true,
+    type: ''
 }

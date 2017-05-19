@@ -26,13 +26,15 @@ Prop                | Type/Options              | Default             | Descript
 ---                 | ---                       | ---                 | ---
 `className`         | *string*                  | `Sortable`          | **`Optional`** The class name of the component
 `classPlaceholder`  | *string*                  | `Placeholder`       | **`Optional`** The class name of the placeholder component when dragging external elements.
-`enabled`           | *boolean*                 | `true`              | **`Optional`** Enable/disable the sorting (dragging still works)
+`enabled`           | *boolean*                 | `true`              | **`Optional`** Enable/disable the sorting 
+`type`              | *string*                  | ``                  | **`Optional`** Type of the elements to sort, in case you want to restrict elements of other Sortable lists.
 
 ## Event Props
 
 Prop                | Parameters                | Description
 ---                 | ---                       | ---
-`onSort`            | *(components)*            | The sorting callback function
+`onSort`            | *(components)*            | The sorting callback function.
+`onSortStart`       | *(components)*            | Triggered when an element starts being dragged.
 `onDrop`            | *(e, data, index)*        | **`Optional`** Called when an external element is dropped.
 
 

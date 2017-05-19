@@ -34,8 +34,8 @@
     "babel-preset-stage-2": "^6.5.0",
     "mocha": "^3.2.0",
     "mocha-stylus-compiler": "^1.0.1",
-    "react": "^0.14.2",
-    "react-dom": "^0.14.2",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4",
     "react-drag-and-drop": "^2.0.1",
     "stack-source-map": "^1.0.4",
     "webpack-hot-middleware": "^2.10.0"
@@ -48,5 +48,6 @@
         "stage-2"
       ]
     }
-  }
+  },
+  "dependencies": {}
 }

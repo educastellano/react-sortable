@@ -10,8 +10,9 @@ let Fruit = (props) => <div className='Fruit'>{ props.icon } {props.children}</d
 storiesOf('Sortable', module)
     .add('with simple sorting', () => {
         let onSort = (components) => {
-            action('onSort()')(components)
-            console.log('*** onSort() *** ', components.map(c => c.props.children))
+            let list = components.map(c => c.props.children)
+            action('onSort()')(list)
+            console.log('*** onSort() *** ', list)
         }
         return (
             <div className='list'>
@@ -30,8 +31,9 @@ storiesOf('Sortable', module)
     })
     .add('with components', () => {
         let onSort = (components) => {
-            action('onSort()')(components)
-            console.log('*** onSort() *** ', components, components.map(c => c.props.icon))
+            let list = components.map(c => c.props.icon)
+            action('onSort()')(list)
+            console.log('*** onSort() *** ', list)
         }
         return (
             <div className='list'>
@@ -139,43 +141,116 @@ storiesOf('Sortable', module)
         )
     })
     .add('with 2 sortable lists', () => {
-        let onSort = (components) => {
-            action('onSort()')(components)
-            console.log('*** onSort() *** ', components)
+        class Demo extends React.Component {
+            constructor(props) {
+                super(props)
+                this.state = {
+                    left: ['Apple', 'Orange', 'Banana', 'Mango', 'Melon'],
+                    right: ['Pineapple', 'Pitaya', 'Mangosteen', 'Durian']
+                }
+            }
+            onSort(list, components) {
+                this.setState({
+                    [list]: components.map(c => c.props.children)
+                })
+            }
+            onLeftDrop(e, data, index) {
+                let props = JSON.parse(data.component_props)
+                this.add('left', props.children, index)
+                this.remove('right', props.children)
+            }
+            onRightDrop(e, data, index) {
+                let props = JSON.parse(data.component_props)
+                this.add('right', props.children, index)
+                this.remove('left', props.children)
+            }
+            add(list, fruit, index) {
+                this.state[list].splice(index, 0, fruit)
+                this.forceUpdate()
+            }
+            remove(list, fruit) {
+                for (let i=0; i<this.state[list].length; i++) {
+                    if (this.state[list][i] === fruit) {
+                        this.state[list].splice(i, 1)
+                        break
+                    }
+                }
+            }
+            render() {
+                let left = this.state.left.map(fruit => {
+                    return <div key={fruit}>{fruit}</div>
+                })
+                let right = this.state.right.map(fruit => {
+                    return <div key={fruit}>{fruit}</div>
+                })
+                return (
+                    <div className='lists'>
+                        <style>{css}</style>
+                        <div className='list'>
+                            <h2>Sortable Fruits</h2>
+                            <Sortable onSort={this.onSort.bind(this, 'left')} onDrop={this.onLeftDrop.bind(this)}>
+                                { left }
+                            </Sortable>
+                        </div>
+                        <div className='arrow'>{'\u2194'}</div>
+                        <div className='list'>
+                            <h2>Sortable Fruits</h2>
+                            <Sortable onSort={this.onSort.bind(this, 'right')} onDrop={this.onRightDrop.bind(this)}>
+                                { right }
+                            </Sortable>
+                        </div>
+                    </div>
+                )
+            }
         }
-        let onLeftDrop = (e, data, index) => {
-            action('onLeftDrop()')(data, index)
-            let componentProps = JSON.parse(data.component_props)
-            console.log('*** Dropped on left list', componentProps.children, ', on index', index)
-        }
-        let onRightDrop = (e, data, index) => {
-            action('onRightDrop()')(data, index)
-            let componentProps = JSON.parse(data.component_props)
-            console.log('*** Dropped on right list', componentProps.children, ', on index', index)
-        }
+
         return (
-            <div className='lists'>
+            <Demo />
+        )
+
+    })
+    .add('with nested lists', () => {
+        let onSortGroup = (components) => {
+            let list = components.map(c => c.props.name)
+            action('onSortGroup()')(list)
+            console.log('*** onSortGroup() *** ', list)
+        }
+        let onSort = (components) => {
+            let list = components.map(c => c.props.icon)
+            action('onSort()')(list)
+            console.log('*** onSort() *** ', list)
+        }
+        let Group = ({ name, children, onSort }) => 
+            <div className='Group'>
+                <div className='Group__name'>
+                    {name}
+                </div>
+                <Sortable onSort={onSort} type='fruits'>
+                    {children}
+                </Sortable>
+            </div>
+        return (
+            <div className='list'>
                 <style>{css}</style>
-                <div className='list'>
-                    <h2>Sortable Fruits</h2>
-                    <Sortable onSort={onSort} onDrop={onLeftDrop}>
-                        <div>Apple</div>
-                        <div>Orange</div>
-                        <div>Banana</div>
-                        <div>Mango</div>
-                        <div>Melon</div>
-                    </Sortable>
-                </div>
-                <div className='arrow'>{'\u2194'}</div>
-                <div className='list'>
-                    <h2>Sortable Fruits</h2>
-                    <Sortable onSort={onSort} onDrop={onRightDrop}>
-                        <div>Pineapple</div>
-                        <div>Pitaya</div>
-                        <div>Mangosteen</div>
-                        <div>Durian</div>
-                    </Sortable>
-                </div>
+                <h2>Sortable Fruits</h2>
+                <Sortable onSort={onSortGroup} type='groups'>
+                    <Group onSort={onSort} name='Group A'>
+                        <Fruit icon='🍓'>Strawberry</Fruit>
+                        <Fruit icon='🍍'>Pineapple</Fruit>
+                        <Fruit icon='🍈'>Melon</Fruit>
+                        <Fruit icon='🍉'>Watermelon</Fruit>
+                    </Group>
+                    <Group onSort={onSort} name='Group B'>
+                        <Fruit icon='🍌'>Banana</Fruit>
+                        <Fruit icon='🍎'>Apple</Fruit>
+                        <Fruit icon='🍑'>Peach</Fruit>
+                    </Group>
+                    <Group onSort={onSort} name='Group C'>
+                        <Fruit icon='🍋'>Lemon</Fruit>
+                        <Fruit icon='🍊'>Orange</Fruit>
+                        <Fruit icon='🥝'>Kiwi</Fruit>
+                    </Group>
+                </Sortable>
             </div>
         )
     })
