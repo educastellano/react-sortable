@@ -172,6 +172,7 @@ storiesOf('Sortable', module)
                 for (let i=0; i<this.state[list].length; i++) {
                     if (this.state[list][i] === fruit) {
                         this.state[list].splice(i, 1)
+                        this.forceUpdate()
                         break
                     }
                 }

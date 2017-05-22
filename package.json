@@ -7,6 +7,7 @@
     "start": "start-storybook -p 9001",
     "test": "mocha --compilers js:babel-core/register,styl:mocha-stylus-compiler -R nyan -w --check-leaks",
     "build-docs": "build-storybook -s docs -o .out",
+    "preversion": "npm run build-docs",
     "postversion": "git push && git push --tags"
   },
   "browserify": {

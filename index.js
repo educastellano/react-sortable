@@ -97,7 +97,10 @@ export default class Sortable extends React.Component {
             p[type] = e.dataTransfer.getData(type)
             return p
         }, {})
-        if (!this.state.sorting) {
+        // if it's an "external" component, we call onDrop prop.
+        let children = this.state.children.map(c => 
+            c && c.props && c.props.children ? JSON.stringify(c.props.children.props) : '')
+        if (!children.includes(data.component_props)) { 
             if (this.props.onDrop) {
                 this.props.onDrop(e, data, this.state.placeholderIndex)
             }            
